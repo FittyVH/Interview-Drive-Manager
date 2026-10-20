@@ -1,0 +1,38 @@
+const jwt = require("jsonwebtoken")
+const { redisClient } = require('../db/redis')
+
+async function authUser(req, res, next) {
+    const authHeader = req.headers.authorization
+    const token = req.cookies?.token || (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null)
+
+    if (!token) {
+        return res.status(401).json({
+            message: "Token not provided."
+        })
+    }
+
+    const isTokenBlacklisted = await redisClient.get(`blacklist${token}`)
+
+    if (isTokenBlacklisted) {
+        return res.status(401).json({
+            message: "token is invalid"
+        })
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        req.user = decoded
+
+        next()
+
+    } catch (err) {
+
+        return res.status(401).json({
+            message: "Invalid token."
+        })
+    }
+
+}
+
+module.exports = { authUser }
