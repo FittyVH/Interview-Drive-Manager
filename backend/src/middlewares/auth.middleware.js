@@ -35,4 +35,22 @@ async function authUser(req, res, next) {
 
 }
 
-module.exports = { authUser }
+function authorizeRoles(...allowedRoles) {
+    return (req, res, next) => {
+        // Ensure user is authenticated first
+        if (!req.user || !req.user.role) {
+            return res.status(401).json({
+                message: "Unauthorized: User information not found."
+            });
+        }
+        // Check if the user's role matches any allowed role
+        if (!allowedRoles.includes(req.user.role)) {
+            return res.status(403).json({
+                message: "Forbidden: You do not have permission to perform this action."
+            });
+        }
+        next();
+    };
+}
+
+module.exports = { authUser, authorizeRoles }

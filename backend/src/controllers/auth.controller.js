@@ -93,7 +93,7 @@ async function loginUserController(req, res) {
         }
 
         const token = jwt.sign(
-            { id: user._id, username: user.username },
+            { id: user._id, username: user.username, role: user.role },
             process.env.JWT_SECRET || 'secret',
             { expiresIn: "1d" }
         )
@@ -112,7 +112,8 @@ async function loginUserController(req, res) {
             user: {
                 id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                role: user.role
             }
         })
     } catch (err) {
@@ -178,7 +179,8 @@ async function getMeController(req, res) {
             user: {
                 id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                role: user.role
             }
         };
         

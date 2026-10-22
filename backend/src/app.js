@@ -10,4 +10,7 @@ app.use(cookieParser());
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
+const driveRoutes = require('./routes/drive.routes');
+app.use('/api/drive', driveRoutes);
+
 module.exports = app;
