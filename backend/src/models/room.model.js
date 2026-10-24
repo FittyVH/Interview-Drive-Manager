@@ -31,7 +31,7 @@ const roomSchema = new mongoose.Schema({
 
   currentStudent: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "QueueEntry",
+    ref: "queueEntries",
     default: null
   }
 }, { timestamps: true });

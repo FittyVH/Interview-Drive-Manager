@@ -13,4 +13,7 @@ app.use('/api/auth', authRoutes);
 const driveRoutes = require('./routes/drive.routes');
 app.use('/api/drive', driveRoutes);
 
+const queueRoutes = require('./routes/queue.routes')
+app.use('/api/queue', queueRoutes)
+
 module.exports = app;
